@@ -37,7 +37,7 @@ try:
         email = row['email']
         
            
-    db.close() 
+    db.commit() 
 
 
 except Exception as error:
