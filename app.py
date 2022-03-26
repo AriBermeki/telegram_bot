@@ -1,3 +1,4 @@
+from cmd import IDENTCHARS
 from flask import Flask, render_template, redirect, url_for
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import InputRequired, Length
@@ -10,6 +11,7 @@ from flask_migrate import Migrate
 from random import *
 
 
+
 app = Flask(__name__)
 Bootstrap(app)
 SECRET_KEY = os.urandom(32)
@@ -18,9 +20,10 @@ app.config['SECRET_KEY'] = SECRET_KEY
 db = SQLAlchemy(app)
 HTTP_API = os.environ['HTTP_API']
 
+
 def random_integer():
-    min_ = 100
-    max_ = 1000000000
+    min_ = 1000
+    max_ = 10000
     rand = randint(min_, max_)
     return rand
 
@@ -45,15 +48,10 @@ class User(db.Model):
 class Regester(FlaskForm):
     
     email = StringField('Email', validators=[InputRequired(), Length(max=200)])
-    
+    ID = StringField(randint(1000, 10000))
 
 
 
-def db_regist(user_id, user_email):
-    form = Regester()
-    user_id = User.query.filter_by(email=form.email.data).first()
-    user_email = User.query.filter_by(email=form.email.data).first()
-    print(user_id, user_email)
 
 
 
@@ -71,7 +69,7 @@ def regist():
         
         
         user = User(
-            ID = randint(100, 1000000000),
+            ID = form.ID.data,
             email= form.email.data
             )
         db.session.add(user)
@@ -83,6 +81,12 @@ def regist():
 
 
 
+
+
+
+
+
 if __name__=="__main__":
    
     app.run(debug=True)
+
